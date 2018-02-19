@@ -17,17 +17,15 @@ export class HomeworkProvider {
 
   //will take the image from the addphoto page, push the image to storage, and then store the downloadUrl and given name of the photo
   
-  createPost(pictureName: string, picture: string) {
+  createPost(pictureName: string, picture: string): PromiseLike<any> {
     firebase.storage().ref('/pictures/').child(pictureName)
     .child('plantPicture.png')
     .putString(picture, 'base64', {contentType: 'image/png'})
     .then((savedPicture) => {
-      this.DbRef.child(`/guest22List`).update({
-        profilePicture: savedPicture.downloadURL
-      });
-    }).catch(error => {
-      console.log(error);
-     
+    this.DbRef.push({
+     picture: savedPicture.downloadURL,
+      name: pictureName,
+     })
     });
     return 
   }
@@ -36,5 +34,4 @@ export class HomeworkProvider {
   getPhotoList(): firebase.database.Reference {
     return this.DbRef;
   }
-
 }

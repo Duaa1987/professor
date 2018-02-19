@@ -16,8 +16,8 @@ import { PhotoListPage } from '../photo-list/photo-list';
 export class EventDetailPage {
   public currentEvent: any = {};
   public currenthomework: any = {};
-  public guestName: string = '';
-  public guestPicture: string = null;
+  public homeworkName: string = '';
+  public homeworkPicture: string = null;
 
   guestPicture1;
   loading;
@@ -55,7 +55,7 @@ export class EventDetailPage {
       })
       .then(
       imageData => {
-        this.guestPicture = imageData;
+        this.homeworkPicture = imageData;
       },
       error => {
         console.log("ERROR -> " + JSON.stringify(error));
@@ -72,11 +72,11 @@ export class EventDetailPage {
 
   
 
-  addGuest(guestName:string):void{
+  addhomework(homeworkName:string):void{
 
-    this.eventProvider.addGuest(guestName,this.currentEvent.id,this.guestPicture).then(newGuest=>{
-    this.guestName="";
-    this.guestPicture=null;
+    this.eventProvider.addhomework(homeworkName,this.currentEvent.id,this.homeworkPicture).then(newhomework=>{
+    this.homeworkName="";
+    this.homeworkPicture=null;
     });
     
     }

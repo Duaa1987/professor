@@ -13,7 +13,7 @@
   
 
   
-  <ion-card class="add-guest-form">
+  <ion-card class="add-homework-form">
     <ion-card-header>
       Add Homework
     </ion-card-header>
@@ -22,7 +22,7 @@
         <ion-col col-8>
           <ion-item>
             <ion-label stacked>Name</ion-label>
-            <ion-input [(ngModel)]="guestName" type="text" placeholder="What's your guest's name?"></ion-input>
+            <ion-input [(ngModel)]="homeworkName" type="text" placeholder="What's your homework's name?"></ion-input>
           </ion-item>
         </ion-col>
 
@@ -32,20 +32,20 @@
           </button>
         </ion-col>
       </ion-row>
-      <span *ngIf="guestPicture">Picture taken!</span>
-      <button ion-button color="primary" block (click)="addGuest(guestName)" [disabled]="!guestName">
+      <span *ngIf="homeworkPicture">Picture taken!</span>
+      <button ion-button color="primary" block (click)="addhomework(homeworkName)" [disabled]="!homeworkName">
         Add Homework
       </button>
     </ion-card-content>
   </ion-card>
-
+  <img src={{imgurl}}>
   <ion-card-content>
     <ion-list no-lines>
       <button ion-button color="primary" block (click)=" gotophoto()"> List of Homework </button>
     </ion-list>
   </ion-card-content>
   
-
+  
 
 
 </ion-content>

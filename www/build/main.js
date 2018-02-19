@@ -1,4 +1,4 @@
-webpackJsonp([9],{
+webpackJsonp([10],{
 
 /***/ 141:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -67,38 +67,42 @@ webpackEmptyAsyncContext.id = 151;
 var map = {
 	"../pages/event-create/event-create.module": [
 		438,
-		8
+		9
 	],
 	"../pages/event-detail/event-detail.module": [
 		439,
-		7
+		8
 	],
 	"../pages/event-list/event-list.module": [
 		440,
-		6
+		7
 	],
 	"../pages/login/login.module": [
 		441,
 		2
 	],
-	"../pages/photo-list/photo-list.module": [
+	"../pages/p2/p2.module": [
 		442,
+		6
+	],
+	"../pages/p3/p3.module": [
+		443,
 		5
 	],
-	"../pages/photo/photo.module": [
-		443,
+	"../pages/photo-list/photo-list.module": [
+		444,
 		4
 	],
 	"../pages/profile/profile.module": [
-		444,
+		445,
 		3
 	],
 	"../pages/reset-password/reset-password.module": [
-		445,
+		446,
 		1
 	],
 	"../pages/signup/signup.module": [
-		446,
+		447,
 		0
 	]
 };
@@ -119,6 +123,87 @@ module.exports = webpackAsyncContext;
 /***/ }),
 
 /***/ 274:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventProvider; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase__ = __webpack_require__(54);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_firebase__);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+var EventProvider = (function () {
+    function EventProvider() {
+        var _this = this;
+        __WEBPACK_IMPORTED_MODULE_1_firebase___default.a.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                _this.eventListRef = __WEBPACK_IMPORTED_MODULE_1_firebase___default.a
+                    .database()
+                    .ref("/userProfile/" + user.uid + "/eventList");
+            }
+        });
+    }
+    EventProvider.prototype.createEvent = function (studentName, studentId) {
+        return this.eventListRef.push({
+            name: studentName,
+            Id: studentId * 1,
+        });
+    };
+    EventProvider.prototype.getEventList = function () {
+        return this.eventListRef;
+    };
+    EventProvider.prototype.getEventDetail = function (eventId) {
+        return this.eventListRef.child(eventId);
+    };
+    EventProvider.prototype.addhomework = function (homeworkName, eventId, homeworkPicture) {
+        var _this = this;
+        if (homeworkPicture === void 0) { homeworkPicture = null; }
+        return this.eventListRef
+            .child(eventId + "/guestList")
+            .push({ homeworkName: homeworkName, eventId: eventId }) //added eventId
+            .then(function (newhomework) {
+            // I think you could use this one
+            // If there is a guestPicture taken, then
+            // Upload the picture first, then do the update
+            if (homeworkPicture != null) {
+                __WEBPACK_IMPORTED_MODULE_1_firebase___default.a
+                    .storage()
+                    .ref("/guestProfile/" + newhomework.key + "/Picture.png")
+                    .putString(homeworkPicture, 'base64', { contentType: 'image/png' })
+                    .then(function (savedPicture) {
+                    _this.eventListRef.child(eventId + "/guestList/" + newhomework.key).update({
+                        picture: savedPicture.downloadURL,
+                    });
+                });
+                return;
+            }
+        });
+    };
+    EventProvider.prototype.getPhotoList = function () {
+        //return this.eventListRef.child(`/guestProfile/`);
+        return this.eventListRef;
+    };
+    EventProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [])
+    ], EventProvider);
+    return EventProvider;
+}());
+
+//# sourceMappingURL=event.js.map
+
+/***/ }),
+
+/***/ 275:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -180,104 +265,6 @@ var AuthProvider = (function () {
 
 /***/ }),
 
-/***/ 275:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return EventProvider; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase__ = __webpack_require__(54);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_firebase___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_firebase__);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-var EventProvider = (function () {
-    function EventProvider() {
-        var _this = this;
-        __WEBPACK_IMPORTED_MODULE_1_firebase___default.a.auth().onAuthStateChanged(function (user) {
-            if (user) {
-                _this.eventListRef = __WEBPACK_IMPORTED_MODULE_1_firebase___default.a
-                    .database()
-                    .ref("/userProfile/" + user.uid + "/eventList");
-            }
-        });
-    }
-    EventProvider.prototype.createEvent = function (studentName, studentId) {
-        return this.eventListRef.push({
-            name: studentName,
-            Id: studentId * 1,
-        });
-    };
-    EventProvider.prototype.getEventList = function () {
-        return this.eventListRef;
-    };
-    EventProvider.prototype.getEventDetail = function (eventId) {
-        return this.eventListRef.child(eventId);
-    };
-    EventProvider.prototype.addGuest = function (guestName, eventId, guestPicture) {
-        var _this = this;
-        if (guestPicture === void 0) { guestPicture = null; }
-        return this.eventListRef
-            .child(eventId + "/guestList")
-            .push({ guestName: guestName, eventId: eventId }) //added eventId
-            .then(function (newGuest) {
-            // I think you could use this one
-            // If there is a guestPicture taken, then
-            // Upload the picture first, then do the update
-            if (guestPicture != null) {
-                __WEBPACK_IMPORTED_MODULE_1_firebase___default.a
-                    .storage()
-                    .ref("/guestProfile/" + newGuest.key + "/profilePicture.png")
-                    .putString(guestPicture, 'base64', {
-                    contentType: 'image/png',
-                })
-                    .then(function (savedPicture) {
-                    _this.eventListRef.child(eventId + "/guestList/" + newGuest.key).update({
-                        profilePicture: savedPicture.downloadURL
-                    });
-                }).catch(function (error) {
-                    console.log(error);
-                });
-            }
-        });
-    };
-    EventProvider.prototype.getphoto = function (guestName, eventId, guestPicture) {
-        if (guestPicture === void 0) { guestPicture = null; }
-        return this.eventListRef
-            .child(eventId + "/guestList")
-            .push({ guestName: guestName, eventId: eventId }) //added eventId
-            .then(function (newGuest) {
-            // I think you could use this one
-            // If there is a guestPicture taken, then
-            // Upload the picture first, then do the update
-            if (guestPicture != null) {
-                __WEBPACK_IMPORTED_MODULE_1_firebase___default.a
-                    .storage()
-                    .ref().child(eventId + "/guestList/" + newGuest.key).getDownloadURL().then(function (url) {
-                    guestPicture = url;
-                });
-            }
-        });
-    };
-    EventProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [])
-    ], EventProvider);
-    return EventProvider;
-}());
-
-//# sourceMappingURL=event.js.map
-
-/***/ }),
-
 /***/ 277:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -314,11 +301,10 @@ var HomeworkProvider = (function () {
             .child('plantPicture.png')
             .putString(picture, 'base64', { contentType: 'image/png' })
             .then(function (savedPicture) {
-            _this.DbRef.child("/guest22List").update({
-                profilePicture: savedPicture.downloadURL
+            _this.DbRef.push({
+                picture: savedPicture.downloadURL,
+                name: pictureName,
             });
-        }).catch(function (error) {
-            console.log(error);
         });
         return;
     };
@@ -337,7 +323,7 @@ var HomeworkProvider = (function () {
 
 /***/ }),
 
-/***/ 280:
+/***/ 279:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -414,13 +400,13 @@ var ProfileProvider = (function () {
 
 /***/ }),
 
-/***/ 281:
+/***/ 280:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(282);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(305);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(281);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(304);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -428,7 +414,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 305:
+/***/ 304:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -439,12 +425,12 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(273);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_camera__ = __webpack_require__(276);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_email_composer__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_email_composer__ = __webpack_require__(278);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__app_component__ = __webpack_require__(436);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__pages_home_home__ = __webpack_require__(141);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_auth_auth__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_event_event__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_profile_profile__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__providers_auth_auth__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__providers_event_event__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__providers_profile_profile__ = __webpack_require__(279);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__providers_homework_homework__ = __webpack_require__(277);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -477,8 +463,9 @@ var AppModule = (function () {
                         { loadChildren: '../pages/event-detail/event-detail.module#EventDetailPageModule', name: 'EventDetailPage', segment: 'event-detail/:eventId/:homeworkId', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/event-list/event-list.module#EventListPageModule', name: 'EventListPage', segment: 'event-list', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/p2/p2.module#P2PageModule', name: 'P2Page', segment: 'p2', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/p3/p3.module#P3PageModule', name: 'P3Page', segment: 'p3', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/photo-list/photo-list.module#PhotoListPageModule', name: 'PhotoListPage', segment: 'photo-list', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/photo/photo.module#PhotoPageModule', name: 'PhotoPage', segment: 'photo', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/profile/profile.module#ProfilePageModule', name: 'ProfilePage', segment: 'profile', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/reset-password/reset-password.module#ResetPasswordPageModule', name: 'ResetPasswordPage', segment: 'reset-password', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/signup/signup.module#SignupPageModule', name: 'SignupPage', segment: 'signup', priority: 'low', defaultHistory: [] }
@@ -588,5 +575,5 @@ var firebaseConfig = {
 
 /***/ })
 
-},[281]);
+},[280]);
 //# sourceMappingURL=main.js.map

@@ -28,7 +28,14 @@
       </ion-row>
     </ion-grid>
 
-    
+    <ion-card *ngFor="let pic of photoList" >
+      <ion-item>
+        <h1>{{pic?.name}}</h1>
+          <ion-thumbnail item-left>
+            <img src={{pic?.picture}} >
+          </ion-thumbnail>    
+      </ion-item>
+    </ion-card>
 
 
     <button ion-button full (click)="captureImage()">Capture Image</button>

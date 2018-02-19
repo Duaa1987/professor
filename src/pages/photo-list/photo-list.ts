@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams,AlertController } from 'ionic-angular';
-import { HomeworkProvider } from '../../providers/homework/homework';
+import { EventProvider } from '../../providers/event/event';
 import { EmailComposer } from '@ionic-native/email-composer';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 
@@ -21,12 +21,12 @@ export class PhotoListPage {
   galleryType = 'regular';
   public photoList = [];
   currentImage = null;
-
-  constructor(private camera: Camera, private emailComposer: EmailComposer,    private alertCtrl: AlertController,  public navCtrl: NavController, public navParams: NavParams , public photoProvider: HomeworkProvider) {
+  
+  constructor(private camera: Camera, private emailComposer: EmailComposer,    private alertCtrl: AlertController,  public navCtrl: NavController, public navParams: NavParams , public eventProvider: EventProvider) {
   }
 
   ionViewDidEnter(){
-    this.photoProvider.getPhotoList().on('value', snapshot => {
+    this.eventProvider.getPhotoList().on('value', snapshot => {
       this.photoList = [];
       snapshot.forEach( snap => {
         this.photoList.push({
@@ -39,6 +39,7 @@ export class PhotoListPage {
       });
     });
   }
+
 
   //go to the Add Photo Page
   goToAddPhoto(){

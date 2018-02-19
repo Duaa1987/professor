@@ -33,64 +33,52 @@ export class EventProvider {
     return this.eventListRef.child(eventId);
   }
 
-  addGuest(guestName: string, eventId: string, guestPicture: string = null
+  addhomework(homeworkName: string, eventId: string, homeworkPicture: string = null
   ): PromiseLike<any> {
 
     return this.eventListRef
       .child(`${eventId}/guestList`)
-      .push({ guestName, eventId }) //added eventId
-      .then(newGuest => {
+      .push({ homeworkName, eventId }) //added eventId
+      .then(newhomework => {
 
         // I think you could use this one
         // If there is a guestPicture taken, then
         // Upload the picture first, then do the update
-        if (guestPicture != null) {
-          firebase
+        if (homeworkPicture != null) {
+
+
+
+         firebase
             .storage()
-            .ref(`/guestProfile/${newGuest.key}/profilePicture.png`)
-            .putString(guestPicture, 'base64', {
-              contentType: 'image/png',
-            })
+            .ref(`/guestProfile/${newhomework.key}/Picture.png`)
+            .putString(homeworkPicture,'base64', {contentType: 'image/png'})
             .then(savedPicture => {
-              this.eventListRef.child(`${eventId}/guestList/${newGuest.key}`).update({
-                profilePicture: savedPicture.downloadURL
-              });
-            }).catch(error => {
-              console.log(error);
+              this.eventListRef.child(`${eventId}/guestList/${newhomework.key}`).update({
+                picture: savedPicture.downloadURL,
+                
+
+              })
             });
+            return 
           }
+
+
+          
           
 
       });
+
+      
   }
 
   
-
-
-
-  getphoto(guestName: string, eventId: string, guestPicture: string = null
-  ): PromiseLike<any> {
-
-    return this.eventListRef
-      .child(`${eventId}/guestList`)
-      .push({ guestName, eventId }) //added eventId
-      .then(newGuest => {
-
-        // I think you could use this one
-        // If there is a guestPicture taken, then
-        // Upload the picture first, then do the update
-        if (guestPicture != null) {
-          firebase
-            .storage()
-            .ref().child(`${eventId}/guestList/${newGuest.key}`).getDownloadURL(). then((url)=>{
-              guestPicture = url;
-                 });
-          }
-          
-
-      });
+  getPhotoList(): firebase.database.Reference {
+    //return this.eventListRef.child(`/guestProfile/`);
+    return this.eventListRef ;
   }
 
+
+  
   
 
 
